@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- H2 in-memory database -->
+        <property name="hibernate.connection.driver_class">org.h2.Driver</property>
+        <property name="hibernate.connection.url">jdbc:h2:mem:clinic;DB_CLOSE_DELAY=-1</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password"></property>
+
+        <!-- Drop and recreate schema on startup -->
+        <property name="hibernate.hbm2ddl.auto">create</property>
+
+        <!-- Print SQL to stdout -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- Step 1 – Classes -->
+        <mapping class="pjatk.mas.mp04.model.Patient"/>
+
+        <!-- Step 2 – Associations -->
+        <mapping class="pjatk.mas.mp04.model.Nurse"/>
+        <mapping class="pjatk.mas.mp04.model.Ward"/>
+
+        <!-- Step 3 – Inheritance (uncomment when ready) -->
+        <!--
+        <mapping class="pjatk.mas.mp04.model.ClinicStaff"/>
+        <mapping class="pjatk.mas.mp04.model.Doctor"/>
+        <mapping class="pjatk.mas.mp04.model.Receptionist"/>
+        -->
+
+    </session-factory>
+</hibernate-configuration>
