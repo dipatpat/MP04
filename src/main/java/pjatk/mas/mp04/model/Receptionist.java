@@ -2,9 +2,7 @@ package pjatk.mas.mp04.model;
 
 import jakarta.persistence.*;
 
-/**
- * RM – Inheritance demo (subclass via JOINED).
- */
+
 @Entity
 @Table(name = "receptionists")
 @PrimaryKeyJoinColumn(name = "staff_id")
@@ -12,7 +10,6 @@ public class Receptionist extends ClinicStaff {
 
     private String deskNumber;
 
-    /** Required by Hibernate. */
     public Receptionist() {}
 
     public Receptionist(String firstName, String lastName, String department, String deskNumber) {
@@ -23,8 +20,12 @@ public class Receptionist extends ClinicStaff {
     }
 
     @Column(nullable = false)
-    public String getDeskNumber() { return deskNumber; }
-    public void setDeskNumber(String v) { this.deskNumber = v; }
+    public String getDeskNumber() {
+        return deskNumber;
+    }
+    public void setDeskNumber(String deskNumber) {
+        this.deskNumber = deskNumber;
+    }
 
     @Override
     public String generateWorkReport() {

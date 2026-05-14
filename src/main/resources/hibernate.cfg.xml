@@ -26,12 +26,10 @@
         <mapping class="pjatk.mas.mp04.model.Nurse"/>
         <mapping class="pjatk.mas.mp04.model.Ward"/>
 
-        <!-- Step 3 – Inheritance (uncomment when ready) -->
-        <!--
+        <!-- Step 3 – Inheritance -->
         <mapping class="pjatk.mas.mp04.model.ClinicStaff"/>
         <mapping class="pjatk.mas.mp04.model.Doctor"/>
         <mapping class="pjatk.mas.mp04.model.Receptionist"/>
-        -->
 
     </session-factory>
 </hibernate-configuration>

@@ -2,6 +2,7 @@ package pjatk.mas.mp04.model;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -60,14 +61,14 @@ public class Ward {
         this.floor = floor;
     }
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
         name = "ward_nurses",
         joinColumns        = @JoinColumn(name = "ward_id"),
         inverseJoinColumns = @JoinColumn(name = "nurse_id")
     )
     public List<Nurse> getNurses() {
-        return nurses;
+        return Collections.unmodifiableList(nurses);
     }
     public void setNurses(List<Nurse> nurses) {
         this.nurses = nurses;

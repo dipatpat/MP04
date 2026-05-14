@@ -73,14 +73,18 @@ public class Nurse {
         this.wards = wards;
     }
 
-    void addWard(Ward ward) {
+    public void addWard(Ward ward) {
+        if (ward == null) throw new IllegalArgumentException("Ward cannot be null");
         if (!wards.contains(ward)) {
             wards.add(ward);
+            ward.addNurse(this);
         }
     }
 
-    void removeWard(Ward ward) {
-        wards.remove(ward);
+    public void removeWard(Ward ward) {
+        if (wards.remove(ward)) {
+            ward.removeNurse(this);
+        }
     }
 
     @Transient

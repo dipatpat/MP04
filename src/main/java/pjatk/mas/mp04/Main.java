@@ -25,9 +25,9 @@ public class Main {
             registry = new StandardServiceRegistryBuilder().configure().build();
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
 //            demonstrateClasses(sessionFactory);
+//            demonstrateAssociations(sessionFactory);
 
-            demonstrateAssociations(sessionFactory);
-            // demonstrateInheritance(sessionFactory);    // next step
+            demonstrateInheritance(sessionFactory);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,14 +143,13 @@ public class Main {
         var wardA  = new Ward("W-A", "Cardiology A", 2);
         var wardB  = new Ward("W-B", "Cardiology B", 3);
 
-        wardA.addNurse(nurse1);
-        wardA.addNurse(nurse2);
-        wardB.addNurse(nurse1);
+        wardA.addNurse(nurse1);   // add from the Ward side
+        nurse2.addWard(wardA);    // add from the Nurse side — same result
+        nurse1.addWard(wardB);    // add from the Nurse side
 
         try (Session session = sf.openSession()) {
             session.beginTransaction();
-            session.persist(nurse1);
-            session.persist(nurse2);
+            // nurses are persisted automatically via CascadeType.PERSIST on Ward
             session.persist(wardA);
             session.persist(wardB);
             session.getTransaction().commit();
@@ -168,13 +167,9 @@ public class Main {
         Thread.sleep(60_000);
     }
 
-    // -------------------------------------------------------------------------
-    // RM – Inheritance  (JOINED strategy)
-    //   * abstract clinic_staff table  +  doctors table  +  receptionists table
-    //   * polymorphic HQL query returns both Doctor and Receptionist instances
-    // -------------------------------------------------------------------------
-    private static void demonstrateInheritance(SessionFactory sf) {
-        System.out.println("\n========== RM – INHERITANCE ==========");
+
+    private static void demonstrateInheritance(SessionFactory sf) throws InterruptedException {
+        System.out.println("\n========== INHERITANCE ==========");
 
         var doctor       = new Doctor("Adam", "Lis", "Surgery", "LIC-999", "Surgeon");
         var receptionist = new Receptionist("Maria", "Kos", "Admissions", "DESK-3");
@@ -186,7 +181,7 @@ public class Main {
             session.getTransaction().commit();
         }
 
-        System.out.println("Polymorphic query — all ClinicStaff (Doctor + Receptionist):");
+        System.out.println("All ClinicStaff:");
         try (Session session = sf.openSession()) {
             session.beginTransaction();
             List<ClinicStaff> staff = session.createQuery("from ClinicStaff", ClinicStaff.class).list();
@@ -195,5 +190,8 @@ public class Main {
             }
             session.getTransaction().commit();
         }
+
+        System.out.println("\n>>> PAUSING 60s — query CLINIC_STAFF, DOCTORS, RECEPTIONISTS in H2 console now");
+        Thread.sleep(60_000);
     }
 }
